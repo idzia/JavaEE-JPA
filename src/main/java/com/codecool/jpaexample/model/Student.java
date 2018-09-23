@@ -20,10 +20,18 @@ public class Student {
     @Temporal(TemporalType.DATE)
     private Date dateOfBirth;
 
+    @Transient
     private long age;
 
     @OneToOne
     private Address address;
+
+    @ManyToOne
+    private Klass klass;
+
+    @ElementCollection
+    @Column(name="Phone")
+    private List<String> phoneNumbers = new ArrayList<>();
 
     public Student() {
     }
@@ -34,12 +42,18 @@ public class Student {
         this.dateOfBirth = dateOfBirth;
         this.age = (Calendar.getInstance().getTimeInMillis() - dateOfBirth.getTime())
                 / (60L * 60L * 1000L * 24L * 365L);
+
     }
 
-    public Student(String name, String email, Date dateOfBirth, Address address) {
+    public Student(String name, String email, Date dateOfBirth, Address address, List<String> phoneNumbers, Klass klass) {
         this(name, email, dateOfBirth);
+
         this.address = address;
+        this.phoneNumbers = phoneNumbers;
+        this.klass = klass;
     }
+
+    public Klass getKlass() {return klass;}
 
     public long getId() {
         return id;
@@ -84,6 +98,12 @@ public class Student {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public List<String> getPhone() {
+        return phoneNumbers;
+    }
+
+
 
     @Override
     public String toString() {
